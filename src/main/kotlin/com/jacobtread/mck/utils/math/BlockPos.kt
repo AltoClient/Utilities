@@ -1,12 +1,15 @@
 package com.jacobtread.mck.utils.math
 
+import org.joml.Vector3d
 import org.joml.Vector3i
 import org.joml.Vector3ic
 
-class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
+open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
 
     companion object {
-        val ORIGIN = BlockPos(0, 0, 0)
+        @JvmField
+        val ORIGIN = BlockPos()
+        @JvmField
         val NULL = BlockPos(-1, -1, -1)
 
         private val NUM_X_BITS: Int = 1 + Maths.logBase2(Maths.roundUpToPow2(30000000))
@@ -24,12 +27,94 @@ class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             val z = ((this shl (64 - NUM_Z_BITS)) shr (64 - NUM_Z_BITS))
             return BlockPos(x.toInt(), y.toInt(), z.toInt())
         }
+
+        @JvmStatic
+        fun boxIterator(from: BlockPos, to: BlockPos): Iterable<BlockPos> {
+            from.min(to)
+            to.max(from)
+            return object : Iterable<BlockPos> {
+                override fun iterator(): Iterator<BlockPos> {
+                    return object : AbstractIterator<BlockPos>() {
+                        var blockPos: BlockPos = NULL
+
+                        override fun next(): BlockPos {
+                            return blockPos
+                        }
+
+                        override fun computeNext() {
+                            if (blockPos === NULL) {
+                                blockPos.set(from)
+                                setNext(blockPos)
+                            } else if (blockPos == to) {
+                                done()
+                            } else {
+                                var (x, y, z) = blockPos
+                                if (x < to.x) {
+                                    x++
+                                } else if (y < to.y) {
+                                    x = from.x
+                                    y++
+                                } else if (z < to.z) {
+                                    x = from.x
+                                    y = from.y
+                                    z++
+                                }
+                                blockPos.set(x, y, z)
+                                setNext(blockPos)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    constructor(x: Double, y: Double, z: Double) : this(floor(x), floor(y), floor(z))
+    constructor() : this(0, 0, 0)
+
+    constructor(x: Double, y: Double, z: Double) : this(Maths.floor(x), Maths.floor(y), Maths.floor(z))
+    constructor(vector3i: Vector3i) : this(vector3i.x, vector3i.y, vector3i.z)
+    constructor(vector3d: Vector3d) : this(vector3d.x, vector3d.y, vector3d.z)
+
+    fun up(): BlockPos = up(1)
+    fun up(n: Int = 1): BlockPos = offset(Facing.UP, n)
+
+    fun down(): BlockPos = down(1)
+    fun down(n: Int = 1): BlockPos = offset(Facing.DOWN, n)
+
+    fun north(): BlockPos = north(1)
+    fun north(n: Int = 1): BlockPos = offset(Facing.NORTH, n)
+
+    fun south(): BlockPos = south(1)
+    fun south(n: Int = 1): BlockPos = offset(Facing.SOUTH, n)
+
+    fun east(): BlockPos = east(1)
+    fun east(n: Int = 1): BlockPos = offset(Facing.EAST, n)
+
+    fun west(): BlockPos = west(1)
+    fun west(n: Int = 1): BlockPos = offset(Facing.WEST, n)
+
+    fun offset(facing: Facing): BlockPos = offset(facing, 1)
+
+    fun offset(facing: Facing, n: Int): BlockPos {
+        return if (n == 0) this else BlockPos(
+            x + facing.frontOffsetX * n,
+            y + facing.frontOffsetY * n,
+            z + facing.frontOffsetZ * n,
+        )
+    }
+
+    override fun set(x: Int, y: Int, z: Int): BlockPos {
+        super.set(x, y, z)
+        return this
+    }
 
     override fun add(x: Int, y: Int, z: Int): BlockPos {
         if (x == 0 && y == 0 && z == 0) return this
+        return BlockPos(this.x + x, this.y + y, this.z + z)
+    }
+
+    fun add(x: Double, y: Double, z: Double): BlockPos {
+        if (x == 0.0 && y == 0.0 && z == 0.0) return this
         return BlockPos(this.x + x, this.y + y, this.z + z)
     }
 
@@ -61,6 +146,13 @@ class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
         return dx * dx + dy * dy + dz * dz
     }
 
+    fun cross(b: Vector3i): Vector3i {
+        return crossProduct(b)
+    }
+
+    fun copy(): BlockPos {
+        return BlockPos(this)
+    }
 
     fun asLong(): Long {
         return ((x.toLong() and X_MASK) shl X_SHIFT) or

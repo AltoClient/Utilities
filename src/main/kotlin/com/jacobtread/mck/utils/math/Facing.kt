@@ -85,7 +85,7 @@ enum class Facing(
          * @return The facing value at that angle
          */
         @JvmStatic
-        fun byAngle(angle: Float): Facing = getHorizontal(floor(angle / 90f + 0.5f) and 3)
+        fun byAngle(angle: Float): Facing = getHorizontal(Maths.floor(angle / 90f + 0.5f) and 3)
 
         /**
          * byName Searches the [NAME_LOOKUP] for the provided
