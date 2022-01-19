@@ -31,18 +31,19 @@ class Report(val description: String, val cause: Throwable) {
     // If the next section will be the first section
     private var head = true
 
+    val system = ReportSection("System Details").apply {
+        add("Minecraft Version", "1.8.9 MCK")
+        add("Operating System", getSystemName())
+        add("Java Version", getJavaName())
+        add("Java VM Version", getJavaVMName())
+        add("Memory", getMemoryString())
+        add("JVM Flags", getUserJVMFlags())
+    }
+
     /**
      * Adds the system section
      */
     init {
-        val system = ReportSection("System Details").apply {
-            add("Minecraft Version", "1.8.9 MCK")
-            add("Operating System", getSystemName())
-            add("Java Version", getJavaName())
-            add("Java VM Version", getJavaVMName())
-            add("Memory", getMemoryString())
-            add("JVM Flags", getUserJVMFlags())
-        }
         sections.add(system)
     }
 
