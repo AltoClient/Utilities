@@ -8,8 +8,8 @@ import kotlin.math.abs
 
 enum class Facing(
     val index: Int,
-    val horizontalIndex: Int,
     private val oppositeIndex: Int,
+    val horizontalIndex: Int,
     val facingName: String,
     val axisDirection: AxisDirection,
     val axis: Axis,
@@ -23,9 +23,12 @@ enum class Facing(
     EAST(5, 4, 3, "east", AxisDirection.POSITIVE, Axis.X, Vector3i(1, 0, 0));
 
     companion object {
+        @JvmField
         val VALUES = arrayOf(DOWN, UP, NORTH, SOUTH, WEST, EAST)
+
+        @JvmField
         val HORIZONTALS = arrayOf(NORTH, SOUTH, WEST, EAST)
-        val NAME_LOOKUP = mapOf(
+        private val NAME_LOOKUP = mapOf(
             "down" to DOWN,
             "up" to UP,
             "north" to NORTH,
@@ -207,16 +210,12 @@ enum class Facing(
     }
 
     enum class Plane : Predicate<Facing?>, Iterable<Facing> {
-        HORIZONTAL {
-            override fun facings() = arrayOf(NORTH, EAST, SOUTH, WEST)
-        },
-        VERTICAL {
-            override fun facings() = arrayOf(UP, DOWN)
-        };
+        HORIZONTAL,
+        VERTICAL;
 
-        abstract fun facings(): Array<Facing>
+        fun facings(): Array<Facing> = if (this == HORIZONTAL) arrayOf(NORTH, EAST, SOUTH, WEST) else arrayOf(UP, DOWN)
 
-        override fun iterator(): Iterator<Facing> = facings().iterator()
+        override fun iterator(): Iterator<Facing> = facings().asList().iterator()
 
         override fun test(t: Facing?): Boolean = t != null && t.axis.plane == this
 
