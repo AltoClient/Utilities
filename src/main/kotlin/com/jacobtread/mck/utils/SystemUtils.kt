@@ -5,6 +5,7 @@ import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.awt.datatransfer.StringSelection
 import java.io.IOException
+import java.lang.management.ManagementFactory
 import java.net.URI
 import java.nio.file.Path
 
@@ -166,6 +167,36 @@ fun getJavaName(): String {
  */
 fun getJavaVMName(): String {
     return System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor")
+}
+
+/**
+ * getMemoryString Used to get a pretty representation
+ * of the current memory usage
+ *
+ * @return The memory usage string
+ */
+fun getMemoryString(): String {
+    val runtime = Runtime.getRuntime()
+    val maxMemory = runtime.maxMemory()
+    val totalMemory = runtime.totalMemory()
+    val freeMemory = runtime.freeMemory()
+    val maxMemoryMB = maxMemory.bytesToMb()
+    val totalMemoryMB = totalMemory.bytesToMb()
+    val freeMemoryMB = freeMemory.bytesToMb()
+    return "$freeMemory bytes ($freeMemoryMB MB) / $totalMemory bytes ($totalMemoryMB MB) up to $maxMemory bytes ($maxMemoryMB MB)"
+}
+
+/**
+ * getJVMFlags Returns a string containing all
+ * the flags provided to the JVM by the user
+ * (Ones with -X)
+ *
+ * @return The string of flags
+ */
+fun getUserJVMFlags(): String {
+    val runtimeMxBean = ManagementFactory.getRuntimeMXBean()
+    val inputArguments = runtimeMxBean.inputArguments
+    return inputArguments.filter { it.startsWith("-X") }.joinToString { " " }
 }
 
 /**
