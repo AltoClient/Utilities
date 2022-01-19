@@ -1,4 +1,4 @@
-package me.jacobtread.mck.utils.thread
+package com.jacobtread.mck.utils.thread
 
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger

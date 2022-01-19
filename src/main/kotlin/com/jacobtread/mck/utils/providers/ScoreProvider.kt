@@ -1,4 +1,4 @@
-package me.jacobtread.mck.utils.providers
+package com.jacobtread.mck.utils.providers
 
 interface ScoreProvider {
 

@@ -1,5 +1,5 @@
 
-group = "me.jacobtread.mck.utils"
+group = "com.jacobtread.mck.utils"
 version = "1.0.0"
 
 dependencies {

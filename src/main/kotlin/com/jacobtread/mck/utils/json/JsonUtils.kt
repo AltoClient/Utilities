@@ -1,4 +1,4 @@
-package me.jacobtread.mck.utils.json
+package com.jacobtread.mck.utils.json
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement

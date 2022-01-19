@@ -1,4 +1,4 @@
-package me.jacobtread.mck.utils.thread
+package com.jacobtread.mck.utils.thread
 
 import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
