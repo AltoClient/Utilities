@@ -57,7 +57,7 @@ class Report(val description: String, val cause: Throwable) {
         val builder = StringBuilder()
         builder.apply {
             append("====   MCK Crash Report   ====\n")
-            append("Blame Wowkster or Atlas it was probably their fault")
+            append("Blame Wowkster or Atlas it was probably their fault\n")
             append("Time: ")
             val time = SimpleDateFormat().format(Date())
             append(time).append('\n')
