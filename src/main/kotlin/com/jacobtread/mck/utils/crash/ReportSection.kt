@@ -1,5 +1,7 @@
 package com.jacobtread.mck.utils.crash
 
+import java.util.concurrent.Callable
+
 /**
  * ReportSection Represents a section of a [Report]
  *
@@ -25,6 +27,14 @@ class ReportSection(val name: String) {
             "~~ERROR~~ ${value.javaClass.simpleName}: ${value.message}"
         } else value?.toString() ?: "~~NULL~~"
         entries.add(Entry(name, error))
+    }
+
+    fun addSafe(name: String, value: Callable<String>) {
+        try {
+            add(name, value.call())
+        } catch (e: Throwable) {
+            add(name, e)
+        }
     }
 
     /**

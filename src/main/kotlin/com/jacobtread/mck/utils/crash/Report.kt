@@ -75,7 +75,7 @@ class Report(val description: String, val cause: Throwable) {
                 append("Stacktrace:\n")
                 for (stackTraceElement in stackTrace) {
                     append("\tat")
-                    append(stackTrace.toString())
+                    append(stackTraceElement.toString())
                     append('\n')
                 }
                 append('\n')
@@ -156,8 +156,8 @@ class Report(val description: String, val cause: Throwable) {
             } else {
                 false
             }
-            if (addedSize > 0 && sections.isNotEmpty()) {
-                sections.last().popStackTrace(addedSize)
+            if (addedSize > 0 && sections.size > 1) {
+                sections[sections.size - 1].popStackTrace(addedSize)
             } else if (stackSize >= addedSize && size in stackTrace.indices) {
                 this.stackTrace = stackTrace.copyOf()
             } else {
