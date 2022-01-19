@@ -9,6 +9,7 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
     companion object {
         @JvmField
         val ORIGIN = BlockPos()
+
         @JvmField
         val NULL = BlockPos(-1, -1, -1)
 
@@ -35,31 +36,26 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             return object : Iterable<BlockPos> {
                 override fun iterator(): Iterator<BlockPos> {
                     return object : AbstractIterator<BlockPos>() {
-                        var blockPos: BlockPos = NULL
-
-                        override fun next(): BlockPos {
-                            return blockPos
-                        }
+                        var blockPos: BlockPos = from.copy()
+                        var isFirst = true
 
                         override fun computeNext() {
-                            if (blockPos === NULL) {
-                                blockPos.set(from)
+                            if (isFirst) {
                                 setNext(blockPos)
+                                isFirst = false
                             } else if (blockPos == to) {
                                 done()
                             } else {
-                                var (x, y, z) = blockPos
-                                if (x < to.x) {
-                                    x++
-                                } else if (y < to.y) {
-                                    x = from.x
-                                    y++
-                                } else if (z < to.z) {
-                                    x = from.x
-                                    y = from.y
-                                    z++
+                                if (blockPos.x < to.x) {
+                                    blockPos.x++
+                                } else if (blockPos.y < to.y) {
+                                    blockPos.x = from.x
+                                    blockPos.y++
+                                } else if (blockPos.z < to.z) {
+                                    blockPos.x = from.x
+                                    blockPos.y = from.y
+                                    blockPos.z++
                                 }
-                                blockPos.set(x, y, z)
                                 setNext(blockPos)
                             }
                         }
@@ -121,14 +117,14 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
     override fun add(v: Vector3ic): BlockPos {
         if (v.x() == 0 && v.y() == 0 && v.z() == 0) return this
         val out = BlockPos(x, y, z)
-        out.add(v, out)
+        out.add(v)
         return out
     }
 
-    override fun sub(v: Vector3ic): Vector3i {
+    override fun sub(v: Vector3ic): BlockPos {
         if (v.x() == 0 && v.y() == 0 && v.z() == 0) return this
         val out = BlockPos(x, y, z)
-        out.sub(v, out)
+        out.sub(v)
         return out
     }
 
@@ -163,4 +159,18 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
     operator fun component1(): Int = x
     operator fun component2(): Int = y
     operator fun component3(): Int = z
+
+    override fun hashCode(): Int {
+        return (y + z * 31) * 31 + x
+    }
+
+    override fun toString(): String {
+        return "$x, $y, $z"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is BlockPos) return false
+        return x == other.x && y == other.y && z == other.z
+    }
 }
