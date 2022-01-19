@@ -5,6 +5,11 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 
+fun JsonElement.expectObject(name: String): JsonObject {
+    if (this is JsonObject) return this
+    else throw InvalidJsonException(name, "Expected json object type")
+}
+
 fun JsonObject.expectString(key: String): String {
     val element = this[key]
     if (element == null || !element.isJsonPrimitive) throw InvalidJsonException(key, "Expected primitive string type")
