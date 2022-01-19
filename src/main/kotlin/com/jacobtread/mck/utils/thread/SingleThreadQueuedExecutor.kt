@@ -51,19 +51,19 @@ abstract class SingleThreadQueuedExecutor : Executor {
     }
 
     /**
-     * Wrapping method of [submit] which makes this a valid
+     * Wrapping method of [run] which makes this a valid
      * [Executor]
      *
-     * @see submit
+     * @see run
      * @param command The command to execute
      */
     override fun execute(command: Runnable) {
-        submit(command)
+        run(command)
     }
 
     /**
      * Submit a [Runnable] task this will execute wrapper method
-     * of [submit] to allow usage of runnable tasks. These will
+     * of [run] to allow usage of runnable tasks. These will
      * automatically return null as the value for completable future
      * so that you can still tell that task has been completed
      *
@@ -71,11 +71,11 @@ abstract class SingleThreadQueuedExecutor : Executor {
      * @param task The task to execute
      * @return The future that indicated the completion
      */
-    fun submit(task: Runnable): CompletableFuture<*> {
-        return submit(Callable {
+    fun run(task: Runnable): CompletableFuture<*> {
+        return submit {
             task.run()
             null
-        })
+        }
     }
 
     /**
@@ -85,7 +85,8 @@ abstract class SingleThreadQueuedExecutor : Executor {
      */
     fun processTaskQueue() {
         while (queue.isNotEmpty()) {
-            executeTask(queue.removeFirst())
+            val value = queue.removeFirstOrNull() ?: break
+            executeTask(value)
         }
     }
 
@@ -103,9 +104,9 @@ abstract class SingleThreadQueuedExecutor : Executor {
         try {
             val result = queueItem.callable.call()
             queueItem.future.complete(result)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
+            e.printStackTrace()
             queueItem.future.completeExceptionally(e)
-
         }
     }
 
