@@ -28,6 +28,12 @@ fun JsonObject.expectInt(key: String): Int {
     return element.asInt
 }
 
+fun JsonObject.expectIntOrDefault(key: String, default: Int): Int {
+    val element = this[key]
+    if (element == null || element !is JsonPrimitive) return default
+    return element.asInt
+}
+
 fun JsonObject.expectFloat(key: String): Float {
     val element = this[key]
     if (element == null || !element.isJsonPrimitive) throw InvalidJsonException(key, "Expected primitive string type")
