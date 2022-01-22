@@ -72,7 +72,7 @@ enum class Facing(
         fun random(random: Random): Facing = VALUES[random.nextInt(VALUES.size)]
 
         @JvmStatic
-        fun getHorizontal(index: Int): Facing = HORIZONTALS[abs(index)]
+        fun getHorizontal(index: Int): Facing = HORIZONTALS[abs(index % HORIZONTALS.size)]
 
         @JvmStatic
         fun getFront(index: Int): Facing = VALUES[abs(index % VALUES.size)]
