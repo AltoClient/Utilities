@@ -1,7 +1,8 @@
 package com.jacobtread.mck.utils.thread
 
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+
+
+import com.jacobtread.mck.logger.Logger
 import java.util.concurrent.Callable
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -10,7 +11,7 @@ import java.util.concurrent.locks.LockSupport
 
 abstract class ThreadExecutor : Executor {
     companion object {
-        val LOGGER: Logger = LogManager.getLogger()
+        val LOGGER: Logger = Logger.get()
     }
 
     abstract val thread: Thread
