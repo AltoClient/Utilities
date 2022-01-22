@@ -19,6 +19,6 @@ interface NBTSerializable {
      * @param nbt The nbt tag to write to
      * @return The provided nbt tag
      */
-    fun writeToNBT(nbt: NBTCompound): NBTCompound
+    fun writeToNBT(nbt: NBTCompound)
 
 }
