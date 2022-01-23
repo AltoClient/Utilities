@@ -1,9 +1,10 @@
 package com.jacobtread.mck.utils.data
 
+import com.jacobtread.mck.authlib.UserType
+import com.jacobtread.mck.utils.json.UUIDTypeAdapter
 import com.mojang.authlib.GameProfile
-import com.mojang.util.UUIDTypeAdapter
 
-data class Session(val username: String, val uuid: String, val token: String, val type: Type) {
+data class Session(val username: String, val uuid: String, val token: String, val type: UserType) {
 
     fun getProfile(): GameProfile {
         return try {
@@ -11,14 +12,6 @@ data class Session(val username: String, val uuid: String, val token: String, va
             GameProfile(uuid, username)
         } catch (e: IllegalArgumentException) {
             GameProfile(null, username)
-        }
-    }
-
-    enum class Type {
-        LEGACY, MOJANG;
-
-        companion object {
-            fun byName(name: String): Type = if (name == "legacy") LEGACY else MOJANG
         }
     }
 }

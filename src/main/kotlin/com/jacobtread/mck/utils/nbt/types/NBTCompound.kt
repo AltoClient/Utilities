@@ -7,13 +7,8 @@ import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
 
-class NBTCompound() : NBTBase() {
+class NBTCompound : NBTBase() {
     override val id: Byte = COMPOUND
-
-    constructor(init: NBTCompound.() -> Unit) : this() {
-        init()
-    }
-
     val tags = HashMap<String, NBTBase>()
 
     override fun write(output: DataOutput) {
@@ -81,6 +76,8 @@ class NBTCompound() : NBTBase() {
     }
 
     fun getString(key: String): String = tags[key]?.asString() ?: ""
+
+    fun getStringOrNull(key: String): String? = tags[key]?.asString()
 
     fun getIntArray(key: String): IntArray {
         return if (hasKey(key, INT_ARRAY)) (tags[key] as NBTIntArray).asIntArray() else IntArray(0)

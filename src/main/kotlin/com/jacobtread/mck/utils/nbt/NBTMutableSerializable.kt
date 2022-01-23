@@ -2,7 +2,7 @@ package com.jacobtread.mck.utils.nbt
 
 import com.jacobtread.mck.utils.nbt.types.NBTCompound
 
-interface NBTSerializable {
+interface NBTMutableSerializable {
 
     /**
      * Reads the serialized object from

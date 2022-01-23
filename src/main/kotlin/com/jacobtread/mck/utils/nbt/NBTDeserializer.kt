@@ -1,8 +1,6 @@
 package com.jacobtread.mck.utils.nbt
 
-import com.jacobtread.mck.utils.nbt.types.NBTCompound
-
-interface NBTDeserializable<V> {
+interface NBTDeserializer<V> {
 
     /**
      * Reads the serialized object from
@@ -10,6 +8,6 @@ interface NBTDeserializable<V> {
      *
      * @param nbt The nbt tag to read from
      */
-    fun readFromNBT(nbt: NBTCompound): V
+    fun fromNBT(nbt: NBTBase): V
 
 }
