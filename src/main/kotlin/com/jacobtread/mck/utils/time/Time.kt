@@ -1,4 +1,4 @@
-package com.jacobtread.mck.utils
+package com.jacobtread.mck.utils.time
 
 object Time {
 
@@ -9,6 +9,7 @@ object Time {
      *
      * @return The system time in milliseconds
      */
+    @JvmStatic
     fun getHighResolution(): Long {
         return System.nanoTime() / 1000000L
     }

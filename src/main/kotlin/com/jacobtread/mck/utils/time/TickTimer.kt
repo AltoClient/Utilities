@@ -1,4 +1,4 @@
-package com.jacobtread.mck.utils
+package com.jacobtread.mck.utils.time
 
 /**
  * TickTimer A class for converting elapsed time into

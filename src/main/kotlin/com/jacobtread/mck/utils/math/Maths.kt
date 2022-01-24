@@ -151,7 +151,7 @@ object Maths {
     }
 
     @JvmStatic
-    fun normalizeAngle(a: Int, b: Int): Int {
+    fun wrapAbs(a: Int, b: Int): Int {
         return (a % b + b) % b
     }
 
