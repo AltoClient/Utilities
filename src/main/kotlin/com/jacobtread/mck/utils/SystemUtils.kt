@@ -200,6 +200,30 @@ fun getUserJVMFlags(): String {
 }
 
 /**
+ * isJVM64Bit Checks system properties to see if the JVM
+ * is a 64 bit jvm or not
+ *
+ * @return Whether the JVM is 64bit
+ */
+fun isJVM64Bit(): Boolean {
+    arrayOf("sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch").forEach {
+        val property = System.getProperty(it)
+        if (property != null && property.contains("64")) {
+            return true
+        }
+    }
+    return false
+}
+
+/**
+ * availableProcessors Returns the number of available
+ * processors
+ *
+ * @return The number of available processors
+ */
+fun availableProcessors(): Int = Runtime.getRuntime().availableProcessors()
+
+/**
  * OS An enum to represent different
  * possible operating systems
  *
