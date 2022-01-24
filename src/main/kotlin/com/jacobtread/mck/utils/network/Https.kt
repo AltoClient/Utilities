@@ -28,6 +28,20 @@ fun concatURL(url: URL, query: String): URL {
     }
 }
 
+/**
+ * urlEncode URL encodes the provided value
+ *
+ * @param value The value to url encode
+ * @return The url encoded value or an empty string on failure
+ */
+fun urlEncode(value: String): String {
+    return try {
+        URLEncoder.encode(value, Charsets.UTF_8)
+    } catch (e: UnsupportedEncodingException) {
+        ""
+    }
+}
+
 object Https {
     private val LOGGER: Logger = Logger.get()
 
