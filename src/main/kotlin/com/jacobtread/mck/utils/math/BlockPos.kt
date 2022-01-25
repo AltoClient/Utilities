@@ -116,16 +116,12 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
 
     override fun add(v: Vector3ic): BlockPos {
         if (v.x() == 0 && v.y() == 0 && v.z() == 0) return this
-        val out = BlockPos(x, y, z)
-        out.add(v)
-        return out
+        return BlockPos(x + v.x(), y + v.y(), z + v.z())
     }
 
     override fun sub(v: Vector3ic): BlockPos {
         if (v.x() == 0 && v.y() == 0 && v.z() == 0) return this
-        val out = BlockPos(x, y, z)
-        out.sub(v)
-        return out
+        return BlockPos(x - v.x(), y - v.y(), z - v.z())
     }
 
     fun distanceSqToCenter(x: Double, y: Double, z: Double): Double {
