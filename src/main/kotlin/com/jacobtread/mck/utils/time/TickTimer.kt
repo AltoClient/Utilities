@@ -17,6 +17,7 @@ class TickTimer {
      * high-resolution system time in milliseconds
      */
     var lastSync: Long = Time.getHighResolution()
+    var lastSync2: Long = Time.getHighResolution()
 
     /**
      * lastSyncSeconds The last time that was reported by the
@@ -58,17 +59,21 @@ class TickTimer {
         if (timeSinceSync in 0L..1000L) {
             counter += timeSinceSync
             if (counter > 1000L) {
-                val moe = counter / timeSinceSync
+                val moe = counter / (time - lastSync2)
                 syncAdjustment += (moe - syncAdjustment) * 0.2
+                lastSync2 = time
                 counter = 0L
+            }
+            if (counter < 0) {
+                lastSync2 = time
             }
         } else {
             lastSyncSeconds = timeSeconds
         }
-        lastSync = timeSinceSync
-        val adjusted = (timeSeconds - lastSyncSeconds) * syncAdjustment
-        lastSyncSeconds = adjusted
-        partialTicks += (adjusted.coerceIn(0.0, 1.0) * timerSpeed * TICKS_PER_SECOND).toFloat()
+        lastSync = time
+        val adjusted = ((timeSeconds - lastSyncSeconds) * syncAdjustment).coerceIn(0.0, 1.0)
+        lastSyncSeconds = timeSeconds
+        partialTicks += (adjusted * timerSpeed * TICKS_PER_SECOND).toFloat()
         ticks = partialTicks.toInt()
         partialTicks -= ticks
         if (ticks > 10) ticks = 10
