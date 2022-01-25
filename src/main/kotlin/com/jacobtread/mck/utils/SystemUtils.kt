@@ -10,17 +10,6 @@ import java.net.URI
 import java.nio.file.Path
 
 /**
- * SystemUtils Support class for the remaining Java files
- * to allow them to check if the system is mac
- *
- * @constructor Create empty SystemUtils
- */
-object SystemUtils {
-    @JvmStatic
-    fun isMac(): Boolean = getOperatingSystem() == OS.OSX
-}
-
-/**
  * openFolder Opens the provided path using the system. Tries opening
  * it multiple operating system specific ways otherwise will resort to
  * [Desktop.browse]
