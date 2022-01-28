@@ -30,7 +30,7 @@ class Object2IntIdentityMap<V> : MutableMap<V, Int>, Iterable<V> {
      */
     override fun put(key: V, value: Int): Int? {
         identityMap[key] = value
-        while (intValues.size < value) intValues.add(null)
+        while (intValues.size <= value) intValues.add(null)
         intValues[value] = key
         return null
     }

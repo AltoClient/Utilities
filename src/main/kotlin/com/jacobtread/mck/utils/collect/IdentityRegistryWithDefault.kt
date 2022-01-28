@@ -25,6 +25,13 @@ class IdentityRegistryWithDefault<V>(private val defaultIdentifier: Identifier) 
         if (defaultValue == null) throw NullPointerException("Default value of identity registry cannot be null")
     }
 
+    override fun put(id: Int, key: Identifier, value: V) {
+        if (key == defaultIdentifier) {
+            defaultValue = value
+        }
+        super.put(id, key, value)
+    }
+
     override fun get(id: Int): V? {
         val value = super.get(id)
         return value ?: defaultValue

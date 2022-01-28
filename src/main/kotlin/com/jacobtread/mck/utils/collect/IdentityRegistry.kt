@@ -3,6 +3,7 @@ package com.jacobtread.mck.utils.collect
 import com.google.common.collect.HashBiMap
 import com.jacobtread.mck.logger.Logger
 import com.jacobtread.mck.utils.Identifier
+import java.util.*
 
 /**
  * IdentityRegistry A Registry where all values have an associated [Identifier]
@@ -22,6 +23,7 @@ open class IdentityRegistry<V> : Iterable<V> {
     private val objectIdMap = Object2IntIdentityMap<V>()
     private val underlyingMap = HashBiMap.create<Identifier, V>()
     private val registryInverse = underlyingMap.inverse()
+    val keys: Set<Identifier> = Collections.unmodifiableSet(underlyingMap.keys)
 
     /**
      * put Creates a mapping for the provided [id] and [key] to
@@ -70,10 +72,9 @@ open class IdentityRegistry<V> : Iterable<V> {
      * @param value The value to find the [Identifier] for
      * @return The mapped identifier or null if not present
      */
-    fun getIdentifier(value: V): Identifier? {
-        return registryInverse[value]
+    fun getIdentifier(value: V?): Identifier? {
+        return if (value == null) null else registryInverse[value]
     }
-
 
     /**
      * get Returns the value mapped to the provided
