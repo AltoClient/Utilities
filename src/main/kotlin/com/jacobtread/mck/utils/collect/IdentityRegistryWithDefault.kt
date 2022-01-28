@@ -21,7 +21,7 @@ class IdentityRegistryWithDefault<V>(private val defaultIdentifier: Identifier) 
 
     private var defaultValue: V? = null
 
-    private fun ensureDefaultNonNull() {
+    fun ensureDefaultNonNull() {
         if (defaultValue == null) throw NullPointerException("Default value of identity registry cannot be null")
     }
 
