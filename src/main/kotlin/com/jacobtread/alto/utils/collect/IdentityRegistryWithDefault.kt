@@ -17,7 +17,7 @@ import com.jacobtread.alto.utils.Identifier
  * @property defaultIdentifier The default identifier to use if all else fails
  * @constructor Create empty IdentityRegistryWithDefault
  */
-class IdentityRegistryWithDefault<V>(private val defaultIdentifier: Identifier) : IdentityRegistry<V>() {
+open class IdentityRegistryWithDefault<V>(private val defaultIdentifier: Identifier) : IdentityRegistry<V>() {
 
     private var defaultValue: V? = null
 
