@@ -219,3 +219,6 @@ fun availableProcessors(): Int = Runtime.getRuntime().availableProcessors()
  * @constructor Create empty OS
  */
 enum class OS { LINUX, SOLARIS, WINDOWS, OSX, UNKNOWN }
+
+fun <T> lazyNone(initializer: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE, initializer)
+

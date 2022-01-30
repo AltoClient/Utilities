@@ -55,6 +55,19 @@ class AxisAlignedBB(
         end.x, end.y, end.z
     )
 
+    constructor(other: AxisAlignedBB) : this(
+        other.minX, other.minY, other.minZ,
+        other.maxX, other.maxY, other.maxZ
+    )
+
+    /**
+     * copy Creates a copy of this bounding box
+     * and returns it
+     *
+     * @return The new copied bounding box
+     */
+    fun copy(): AxisAlignedBB = AxisAlignedBB(this)
+
     /**
      * add Moves this bounding box by [x], [y], [z] coords and returns a new
      * bounding box in the position. (Values less than zero will affect the
