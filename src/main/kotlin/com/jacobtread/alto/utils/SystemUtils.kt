@@ -220,5 +220,13 @@ fun availableProcessors(): Int = Runtime.getRuntime().availableProcessors()
  */
 enum class OS { LINUX, SOLARIS, WINDOWS, OSX, UNKNOWN }
 
+/**
+ * lazyNone
+ *
+ * @param T
+ * @param initializer
+ * @receiver
+ * @return
+ */
 fun <T> lazyNone(initializer: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE, initializer)
 

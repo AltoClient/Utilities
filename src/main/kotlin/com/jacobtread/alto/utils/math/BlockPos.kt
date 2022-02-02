@@ -129,6 +129,30 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
         return BlockPos(this.x - x, this.y - y, this.z - z)
     }
 
+    /**
+     * isValid Checks if this block pos is a valid position
+     * within the game world
+     *
+     * must be between y-level 0 and 255
+     * must be between -30000000 and 30000000 x and z
+     *
+     * @return Whether this position is valid
+     */
+    fun isValid(): Boolean {
+        return y in 0..255
+                && x >= -30000000 && x < 30000000
+                && z >= -30000000 && z < 30000000
+    }
+
+    /**
+     * isValidXZ The same as [isValid] but only checks the x and z axis
+     * and ignores the y axis
+     *
+     * @return Whether the x and z axis are valid
+     */
+    fun isValidXZ(): Boolean {
+        return x >= -30000000 && x < 30000000 && z >= -30000000 && z < 30000000
+    }
 
     fun distanceSqToCenter(x: Double, y: Double, z: Double): Double {
         val dx = this.x + 0.5 - x

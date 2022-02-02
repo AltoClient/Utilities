@@ -13,7 +13,7 @@ enum class Facing(
     val facingName: String,
     val axisDirection: AxisDirection,
     val axis: Axis,
-    val direction: Vector3i
+    val direction: Vector3i,
 ) {
     DOWN(0, 1, -1, "down", AxisDirection.NEGATIVE, Axis.Y, Vector3i(0, -1, 0)),
     UP(1, 0, -1, "up", AxisDirection.POSITIVE, Axis.Y, Vector3i(0, 1, 0)),
@@ -209,7 +209,7 @@ enum class Facing(
         }
     }
 
-    enum class Plane : Predicate<Facing?>, Iterable<Facing> {
+    enum class Plane : Predicate<Facing>, Iterable<Facing> {
         HORIZONTAL,
         VERTICAL;
 
@@ -217,7 +217,7 @@ enum class Facing(
 
         override fun iterator(): Iterator<Facing> = facings().asList().iterator()
 
-        override fun test(t: Facing?): Boolean = t != null && t.axis.plane == this
+        override fun test(t: Facing): Boolean = t.axis.plane == this
 
         fun random(random: Random): Facing {
             val facings = facings()
