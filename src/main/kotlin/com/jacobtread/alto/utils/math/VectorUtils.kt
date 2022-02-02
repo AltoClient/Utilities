@@ -28,15 +28,15 @@ fun Vector3d.isNaN(): Boolean {
     return x.isNaN() || y.isNaN() || z.isNaN()
 }
 
-private operator fun Vector3d.component1(): Double = x
-private operator fun Vector3d.component2(): Double = y
-private operator fun Vector3d.component3(): Double = z
+operator fun Vector3d.component1(): Double = x
+operator fun Vector3d.component2(): Double = y
+operator fun Vector3d.component3(): Double = z
 
-private operator fun Vector3i.component1(): Int = x
-private operator fun Vector3i.component2(): Int = y
-private operator fun Vector3i.component3(): Int = z
+operator fun Vector3i.component1(): Int = x
+operator fun Vector3i.component2(): Int = y
+operator fun Vector3i.component3(): Int = z
 
-private operator fun Vector3f.component1(): Float = x
-private operator fun Vector3f.component2(): Float = y
-private operator fun Vector3f.component3(): Float = z
+operator fun Vector3f.component1(): Float = x
+operator fun Vector3f.component2(): Float = y
+operator fun Vector3f.component3(): Float = z
 
