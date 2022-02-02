@@ -71,32 +71,41 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
     constructor(vector3i: Vector3i) : this(vector3i.x, vector3i.y, vector3i.z)
     constructor(vector3d: Vector3d) : this(vector3d.x, vector3d.y, vector3d.z)
 
-    fun up(): BlockPos = up(1)
+    @JvmOverloads
     fun up(n: Int = 1): BlockPos = offset(Facing.UP, n)
 
-    fun down(): BlockPos = down(1)
+    @JvmOverloads
     fun down(n: Int = 1): BlockPos = offset(Facing.DOWN, n)
 
-    fun north(): BlockPos = north(1)
+    @JvmOverloads
     fun north(n: Int = 1): BlockPos = offset(Facing.NORTH, n)
 
-    fun south(): BlockPos = south(1)
+    @JvmOverloads
     fun south(n: Int = 1): BlockPos = offset(Facing.SOUTH, n)
 
-    fun east(): BlockPos = east(1)
+    @JvmOverloads
     fun east(n: Int = 1): BlockPos = offset(Facing.EAST, n)
 
-    fun west(): BlockPos = west(1)
+    @JvmOverloads
     fun west(n: Int = 1): BlockPos = offset(Facing.WEST, n)
 
-    fun offset(facing: Facing): BlockPos = offset(facing, 1)
-
-    fun offset(facing: Facing, n: Int): BlockPos {
+    @JvmOverloads
+    fun offset(facing: Facing, n: Int = 1): BlockPos {
         return if (n == 0) this else BlockPos(
             x + facing.frontOffsetX * n,
             y + facing.frontOffsetY * n,
             z + facing.frontOffsetZ * n,
         )
+    }
+
+    @JvmOverloads
+    fun offset(facing: Facing, dest: BlockPos, n: Int = 1): BlockPos {
+        if (n > 0) {
+            dest.x = x + facing.frontOffsetX * n
+            dest.y = y + facing.frontOffsetY * n
+            dest.z = z + facing.frontOffsetZ * n
+        }
+        return this
     }
 
     override fun set(x: Int, y: Int, z: Int): BlockPos {
@@ -146,7 +155,7 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
 
     /**
      * isValidXZ The same as [isValid] but only checks the x and z axis
-     * and ignores the y axis
+     * and ignores the y-axis
      *
      * @return Whether the x and z axis are valid
      */
