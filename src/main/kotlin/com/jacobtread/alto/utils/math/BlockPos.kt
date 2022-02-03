@@ -191,6 +191,10 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
                 (z.toLong() and Z_MASK);
     }
 
+    fun asDoubleArray(): DoubleArray {
+        return doubleArrayOf(x.toDouble(), y.toDouble(), z.toDouble())
+    }
+
     operator fun component1(): Int = x
     operator fun component2(): Int = y
     operator fun component3(): Int = z
