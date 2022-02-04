@@ -3,6 +3,7 @@ package com.jacobtread.alto.utils.math
 import org.joml.RoundingMode
 import org.joml.Vector3d
 import org.joml.Vector3i
+import java.util.*
 import kotlin.math.asin
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -227,9 +228,24 @@ object Maths {
             ) else null
         }
     }
+
     @JvmStatic
     fun cross(a: Vector3i, b: Vector3i) = a.crossProduct(b)
 
+    @JvmStatic
+    fun random(random: Random, min: Int, max: Int): Int {
+        return random.nextInt(max - min) + min
+    }
+
+    @JvmStatic
+    fun random(random: Random, min: Double, max: Double): Double {
+        return (random.nextDouble() * (max - min)) + min
+    }
+
+    @JvmStatic
+    fun random(random: Random, min: Float, max: Float): Float {
+        return (random.nextFloat() * (max - min)) + min
+    }
 
     @JvmStatic
     fun rotatePitch(a: Vector3d, pitch: Float) {
