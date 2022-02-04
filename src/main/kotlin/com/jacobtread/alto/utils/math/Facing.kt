@@ -213,9 +213,10 @@ enum class Facing(
         HORIZONTAL,
         VERTICAL;
 
-        fun facings(): Array<Facing> = if (this == HORIZONTAL) arrayOf(NORTH, EAST, SOUTH, WEST) else arrayOf(UP, DOWN)
+        private fun facings(): Array<Facing> =
+            if (this == HORIZONTAL) arrayOf(NORTH, EAST, SOUTH, WEST) else arrayOf(UP, DOWN)
 
-        override fun iterator(): Iterator<Facing> = facings().asList().iterator()
+        override fun iterator(): Iterator<Facing> = facings().iterator()
 
         override fun test(t: Facing): Boolean = t.axis.plane == this
 
