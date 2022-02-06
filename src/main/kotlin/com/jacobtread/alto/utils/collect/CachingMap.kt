@@ -1,4 +1,4 @@
-package com.jacobtread.alto.utils.data
+package com.jacobtread.alto.utils.collect
 
 class CachingMap<K, V> : HashMap<K, V>() {
 
