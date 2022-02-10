@@ -29,6 +29,10 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             return BlockPos(x.toInt(), y.toInt(), z.toInt())
         }
 
+        fun boxIterator(center: BlockPos, radius: Int): Iterable<BlockPos> {
+            return boxIterator(center.sub(radius, radius, radius), center.add(radius, radius, radius))
+        }
+
         @JvmStatic
         fun boxIterator(from: BlockPos, to: BlockPos): Iterable<BlockPos> {
             from.min(to)
