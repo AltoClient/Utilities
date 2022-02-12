@@ -158,6 +158,16 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
     }
 
     /**
+     * isValidY The same as [isValidY] but only checks if the y axis is
+     * valid and ignores the x and z axis
+     *
+     * @return Whether the y axis value is within 0 and 255
+     */
+    fun isValidY(): Boolean {
+        return y in 0..255
+    }
+
+    /**
      * isValidXZ The same as [isValid] but only checks the x and z axis
      * and ignores the y-axis
      *
