@@ -1,6 +1,6 @@
-package com.jacobtread.alto.utils
+package com.jacobtread.alto.utils.collect
 
-object ArrayUtils {
+object Arrays {
 
     @JvmStatic
     fun <T> merge(a: Array<T>, b: T): Array<T> {
@@ -27,4 +27,12 @@ object ArrayUtils {
         return a.plus(b)
     }
 
+}
+
+inline fun <T> Array<T>.forEachExcluding(value: T, loop: (value: T) -> Unit) {
+    for (t in this) {
+        if (t != value) {
+            loop(t)
+        }
+    }
 }

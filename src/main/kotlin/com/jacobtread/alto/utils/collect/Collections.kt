@@ -12,3 +12,11 @@ package com.jacobtread.alto.utils.collect
 inline fun <T> MutableCollection<T>.addIf(value: T, test: (value: T) -> Boolean) {
     if (test(value)) this.add(value)
 }
+
+inline fun <T> Collection<T>.forEachExcluding(value: T, loop: (value: T) -> Unit) {
+    for (t in this) {
+        if (t != value) {
+            loop(t)
+        }
+    }
+}
