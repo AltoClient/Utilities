@@ -10,7 +10,7 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.notExists
 import kotlin.io.path.writeText
 
-class Report(val description: String, val cause: Throwable) {
+class Report(val description: String, override val cause: Throwable) : RuntimeException(description, cause) {
 
     companion object {
         @JvmStatic
@@ -26,7 +26,7 @@ class Report(val description: String, val cause: Throwable) {
     private val sections = ArrayList<ReportSection>()
 
     // The stack trace for the exception
-    private var stackTrace = emptyArray<StackTraceElement>()
+    private var stackTraceIn = emptyArray<StackTraceElement>()
 
     // If the next section will be the first section
     private var head = true
@@ -67,13 +67,13 @@ class Report(val description: String, val cause: Throwable) {
             append("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n")
             append("-".repeat(86))
             append("\n\n")
-            if (stackTrace.isEmpty() && sections.isNotEmpty()) {
-                stackTrace = sections[0].stackTrace.copyOf()
+            if (stackTraceIn.isEmpty() && sections.isNotEmpty()) {
+                stackTraceIn = sections[0].stackTrace.copyOf()
             }
-            if (stackTrace.isNotEmpty()) {
+            if (stackTraceIn.isNotEmpty()) {
                 append("-- Head --\n")
                 append("Stacktrace:\n")
-                for (stackTraceElement in stackTrace) {
+                for (stackTraceElement in stackTraceIn) {
                     append("\tat")
                     append(stackTraceElement.toString())
                     append('\n')
@@ -159,7 +159,7 @@ class Report(val description: String, val cause: Throwable) {
             if (addedSize > 0 && sections.size > 1) {
                 sections[sections.size - 1].popStackTrace(addedSize)
             } else if (stackSize >= addedSize && size in stackTrace.indices) {
-                this.stackTrace = stackTrace.copyOf()
+                this.stackTraceIn = stackTrace.copyOf()
             } else {
                 head = false
             }
