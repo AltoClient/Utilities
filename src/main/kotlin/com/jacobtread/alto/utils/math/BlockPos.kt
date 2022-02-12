@@ -110,7 +110,6 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             to.max(from)
             return object : Iterable<BlockPos> {
                 override fun iterator(): Iterator<BlockPos> = BoxIterator(from, to)
-
             }
         }
     }
