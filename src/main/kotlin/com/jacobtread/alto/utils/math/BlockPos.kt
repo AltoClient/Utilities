@@ -188,6 +188,20 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
         return BlockPos(this.x - x, this.y - y, this.z - z)
     }
 
+    fun sub(x: Int, y: Int, z: Int, dest: BlockPos): BlockPos {
+        dest.x = this.x - x
+        dest.y = this.y - y
+        dest.z = this.z - z
+        return dest
+    }
+
+    fun add(x: Int, y: Int, z: Int, dest: BlockPos): BlockPos {
+        dest.x = this.x + x
+        dest.y = this.y + y
+        dest.z = this.z + z
+        return dest
+    }
+
     /**
      * isValid Checks if this block pos is a valid position
      * within the game world
