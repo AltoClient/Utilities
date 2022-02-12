@@ -29,8 +29,79 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             return BlockPos(x.toInt(), y.toInt(), z.toInt())
         }
 
-        fun boxIterator(center: BlockPos, radius: Int): Iterable<BlockPos> {
-            return boxIterator(center.sub(radius, radius, radius), center.add(radius, radius, radius))
+        fun boxIterator(center: BlockPos, radius: Int, height: Int = radius): Iterable<BlockPos> {
+            return boxIterator(center.sub(radius, height, radius), center.add(radius, height, radius))
+        }
+
+        fun boxIteratorWithDist(center: BlockPos, radius: Int, height: Int = radius): CenterDistIterator {
+            return CenterDistIterator(center, radius, height)
+        }
+
+        class CenterDistIterator(val center: BlockPos, val radius: Int, val height: Int = radius) : AbstractIterator<BlockPos>() {
+            private val from = center.sub(radius, height, radius)
+            private val to = center.add(radius, height, radius)
+            private val current = from.copy()
+            private var isFirst = true
+
+            var xDist = 0
+            var yDist = 0
+            var zDist = 0
+
+            override fun computeNext() {
+                if (isFirst) {
+                    setNext(current)
+                    isFirst = false
+                } else if (current == to) {
+                    done()
+                } else {
+                    if (current.x < to.x) {
+                        xDist++
+
+                        current.x++
+                    } else if (current.y < to.y) {
+                        xDist = 0
+                        yDist++
+
+                        current.x = from.x
+                        current.y++
+                    } else if (current.z < to.z) {
+                        xDist = 0
+                        yDist = 0
+                        zDist++
+
+                        current.x = from.x
+                        current.y = from.y
+                        current.z++
+                    }
+                    setNext(current)
+                }
+            }
+        }
+
+        class BoxIterator(val from: BlockPos, val to: BlockPos) : AbstractIterator<BlockPos>() {
+            private val blockPos: BlockPos = from.copy()
+            private var isFirst = true
+
+            override fun computeNext() {
+                if (isFirst) {
+                    setNext(blockPos)
+                    isFirst = false
+                } else if (blockPos == to) {
+                    done()
+                } else {
+                    if (blockPos.x < to.x) {
+                        blockPos.x++
+                    } else if (blockPos.y < to.y) {
+                        blockPos.x = from.x
+                        blockPos.y++
+                    } else if (blockPos.z < to.z) {
+                        blockPos.x = from.x
+                        blockPos.y = from.y
+                        blockPos.z++
+                    }
+                    setNext(blockPos)
+                }
+            }
         }
 
         @JvmStatic
@@ -38,33 +109,8 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             from.min(to)
             to.max(from)
             return object : Iterable<BlockPos> {
-                override fun iterator(): Iterator<BlockPos> {
-                    return object : AbstractIterator<BlockPos>() {
-                        var blockPos: BlockPos = from.copy()
-                        var isFirst = true
+                override fun iterator(): Iterator<BlockPos> = BoxIterator(from, to)
 
-                        override fun computeNext() {
-                            if (isFirst) {
-                                setNext(blockPos)
-                                isFirst = false
-                            } else if (blockPos == to) {
-                                done()
-                            } else {
-                                if (blockPos.x < to.x) {
-                                    blockPos.x++
-                                } else if (blockPos.y < to.y) {
-                                    blockPos.x = from.x
-                                    blockPos.y++
-                                } else if (blockPos.z < to.z) {
-                                    blockPos.x = from.x
-                                    blockPos.y = from.y
-                                    blockPos.z++
-                                }
-                                setNext(blockPos)
-                            }
-                        }
-                    }
-                }
             }
         }
     }
