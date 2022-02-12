@@ -2,7 +2,6 @@ package com.jacobtread.alto.utils.nbt
 
 import com.jacobtread.alto.utils.ZERO_BYTE
 import com.jacobtread.alto.utils.crash.Report
-import com.jacobtread.alto.utils.crash.ReportedException
 import com.jacobtread.alto.utils.nbt.types.NBTCompound
 import com.jacobtread.alto.utils.nbt.types.NBTEnd
 import java.io.*
@@ -82,7 +81,7 @@ object NBTStreamUtils {
             val category = report.section("NBT Tag")
             category.add("Tag name", "[UNNAMED TAG]")
             category.add("Tag type", type)
-            throw ReportedException(report)
+            throw report
         }
     }
 

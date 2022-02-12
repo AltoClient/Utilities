@@ -15,7 +15,7 @@ class Report(val description: String, override val cause: Throwable) : RuntimeEx
     companion object {
         @JvmStatic
         fun getOrMake(name: String, e: Throwable): Report {
-            return if (e is ReportedException) e.report else Report(name, e)
+            return if (e is Report) e else Report(name, e)
         }
     }
 

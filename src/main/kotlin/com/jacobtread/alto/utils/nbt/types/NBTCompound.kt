@@ -1,7 +1,6 @@
 package com.jacobtread.alto.utils.nbt.types
 
 import com.jacobtread.alto.utils.crash.Report
-import com.jacobtread.alto.utils.crash.ReportedException
 import com.jacobtread.alto.utils.nbt.*
 import java.io.DataInput
 import java.io.DataOutput
@@ -140,7 +139,7 @@ class NBTCompound : NBTBase() {
                 val category = report.section("NBT Tag")
                 category.add("Tag name", name)
                 category.add("Tag type", java.lang.Byte.valueOf(id))
-                throw ReportedException(report)
+                throw  report
             }
         }
     }
