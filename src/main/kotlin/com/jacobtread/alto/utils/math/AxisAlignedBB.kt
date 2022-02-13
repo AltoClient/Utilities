@@ -193,6 +193,34 @@ class AxisAlignedBB(
     }
 
     /**
+     * offset Moves the entire bounding box over by the
+     * provided x,y,z coords of the provided [vector]
+     *
+     * @param vector The vector to offset by
+     * @return The new moved bounding box
+     */
+    fun offset(vector: Vector3i): AxisAlignedBB {
+        return AxisAlignedBB(
+            minX + vector.x, minY + vector.y, minZ + vector.z,
+            maxX + vector.x, maxY + vector.y, maxZ + vector.z
+        )
+    }
+
+    /**
+     * offset Moves the entire bounding box over by the
+     * provided x,y,z coords of the provided [vector]
+     *
+     * @param vector The vector to offset by
+     * @return The new moved bounding box
+     */
+    fun offset(vector: Vector3d): AxisAlignedBB {
+        return AxisAlignedBB(
+            minX + vector.x, minY + vector.y, minZ + vector.z,
+            maxX + vector.x, maxY + vector.y, maxZ + vector.z
+        )
+    }
+
+    /**
      * calculateXOverlap Checks if the [other] bounding box overlaps with this
      * bounding box and if it does it calculate the overlap position on the x-axis
      * or if it doesn't overlap [default] is returned instead
