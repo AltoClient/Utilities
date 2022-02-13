@@ -34,7 +34,7 @@ open class IdentityRegistry<V> : Iterable<V> {
      * @param value The value to map to
      * @return The value that was inserted
      */
-    open fun put(id: Int, key: Identifier, value: V): V {
+    open fun <T : V> put(id: Int, key: Identifier, value: T): T {
         objectIdMap[value] = id
         if (underlyingMap.containsKey(key)) {
             LOGGER.debug("Adding duplicate key '$key' to registry")
