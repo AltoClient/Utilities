@@ -6,6 +6,11 @@ import java.io.DataInput
 import java.io.DataOutput
 import java.io.IOException
 
+/**
+ * NBTCompound TODO: This needs massive cleanup once all of the java deps are removed
+ *
+ * @constructor Create empty NBTCompound
+ */
 class NBTCompound : NBTBase() {
     override val id: Byte = COMPOUND
     val tags = HashMap<String, NBTBase>()
@@ -118,6 +123,7 @@ class NBTCompound : NBTBase() {
 
     fun getBoolean(key: String): Boolean = getByte(key) != 0.toByte()
     fun removeTag(key: String) = tags.remove(key)
+    fun removeTags(vararg keys: String) = keys.forEach { tags.remove(it) }
 
     override fun read(input: DataInput, depth: Int, sizeTracker: NBTSizeTracker) {
         sizeTracker.read(384L)
