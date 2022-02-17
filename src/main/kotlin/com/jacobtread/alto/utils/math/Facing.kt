@@ -1,5 +1,6 @@
 package com.jacobtread.alto.utils.math
 
+import org.joml.Vector3d
 import org.joml.Vector3f
 import org.joml.Vector3i
 import java.util.*
@@ -103,6 +104,12 @@ enum class Facing(
     val frontOffsetX: Int get() = axisOrZero(Axis.X)
     val frontOffsetY: Int get() = axisOrZero(Axis.Y)
     val frontOffsetZ: Int get() = axisOrZero(Axis.Z)
+
+    val frontOffset: Vector3d get() = Vector3d(
+        frontOffsetX.toDouble(),
+        frontOffsetY.toDouble(),
+        frontOffsetZ.toDouble()
+    )
 
     val opposite: Facing get() = VALUES[oppositeIndex]
 
