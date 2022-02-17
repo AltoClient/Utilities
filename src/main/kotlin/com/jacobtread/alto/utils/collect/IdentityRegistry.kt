@@ -43,6 +43,8 @@ open class IdentityRegistry<V> : Iterable<V> {
         return value
     }
 
+    fun <T : V> put(id: Int, key: String, value: T): T = put(id, Identifier(key), value)
+
     /**
      * containsKey Checks if this registry contains the
      * provided [Identifier]
