@@ -39,11 +39,6 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
         }
 
         fun faceIterator(origin: BlockPos, facePredicate: Predicate<Facing>? = null): FacingIterator {
-            return FacingIterator(origin, facePredicate)
-        }
-
-        class FacingIterator(val origin: BlockPos, facePredicate: Predicate<Facing>?) : AbstractIterator<BlockPos>() {
-            private val current: BlockPos = BlockPos()
             val faces: Array<Facing> = if (facePredicate is Facing.Plane) {
                 facePredicate.facings()
             } else if (facePredicate != null) {
@@ -51,7 +46,16 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             } else {
                 Facing.values()
             }
-            var index = 0
+            return FacingIterator(origin, faces)
+        }
+
+        fun faceIterator(origin: BlockPos, faces: Collection<Facing>): FacingIterator {
+            return FacingIterator(origin, faces.toTypedArray())
+        }
+
+        class FacingIterator(val origin: BlockPos, val faces: Array<Facing>) : AbstractIterator<BlockPos>() {
+            private val current: BlockPos = BlockPos()
+            private var index = 0
             var facing: Facing = faces[0]
 
             override fun computeNext() {
