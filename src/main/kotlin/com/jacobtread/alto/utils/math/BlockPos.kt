@@ -3,6 +3,7 @@ package com.jacobtread.alto.utils.math
 import org.joml.Vector3d
 import org.joml.Vector3i
 import org.joml.Vector3ic
+import java.util.function.Predicate
 
 open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
 
@@ -41,9 +42,13 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             return FacingIterator(origin, facePredicate)
         }
 
-        class FacingIterator(val origin: BlockPos, facePredicate: (facing: Facing) -> Boolean) : AbstractIterator<BlockPos>() {
+        class FacingIterator(val origin: BlockPos, facePredicate: Predicate<Facing>) : AbstractIterator<BlockPos>() {
             private val current: BlockPos = BlockPos()
-            val faces = Facing.values().filter(facePredicate)
+            val faces: Array<Facing> = if (facePredicate is Facing.Plane) {
+                facePredicate.facings()
+            } else {
+                Facing.values().filter { facePredicate.test(it) }.toTypedArray()
+            }
             var index = 0
 
             override fun computeNext() {
