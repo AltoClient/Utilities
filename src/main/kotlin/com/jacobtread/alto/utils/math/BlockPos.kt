@@ -52,11 +52,13 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
                 Facing.values()
             }
             var index = 0
+            var facing: Facing = faces[0]
 
             override fun computeNext() {
                 if (index < faces.size) {
-                    val face = faces[index]
-                    origin.offset(face, current)
+                    facing = faces[index]
+                    origin.offset(facing, current)
+                    index++
                     setNext(current)
                 } else {
                     done()

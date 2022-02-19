@@ -20,3 +20,20 @@ inline fun <T> Collection<T>.forEachExcluding(value: T, loop: (value: T) -> Unit
         }
     }
 }
+
+/**
+ * any Iterates over an iterator until it finds a value that matches
+ * the provided [predicate]
+ *
+ * @param T The type of the iterator contents
+ * @param predicate The condition to test for
+ * @receiver
+ * @return
+ */
+inline fun <T> Iterator<T>.any(predicate: (T) -> Boolean): Boolean {
+    while (hasNext()) {
+        val next = next()
+        if (predicate(next)) return true
+    }
+    return false
+}
