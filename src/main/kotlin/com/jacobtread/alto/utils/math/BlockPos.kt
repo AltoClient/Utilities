@@ -37,6 +37,26 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             return CenterDistIterator(center, radius, height)
         }
 
+        fun faceIterator(origin: BlockPos, facePredicate: (facing: Facing) -> Boolean = { true }): FacingIterator {
+            return FacingIterator(origin, facePredicate)
+        }
+
+        class FacingIterator(val origin: BlockPos, facePredicate: (facing: Facing) -> Boolean) : AbstractIterator<BlockPos>() {
+            private val current: BlockPos = BlockPos()
+            val faces = Facing.values().filter(facePredicate)
+            var index = 0
+
+            override fun computeNext() {
+                if (index < faces.size) {
+                    val face = faces[index]
+                    origin.offset(face, current)
+                    setNext(current)
+                } else {
+                    done()
+                }
+            }
+        }
+
         class CenterDistIterator(val center: BlockPos, val radius: Int, val height: Int = radius) : AbstractIterator<BlockPos>() {
             private val from = center.sub(radius, height, radius)
             private val to = center.add(radius, height, radius)
