@@ -153,6 +153,11 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
     constructor(vector3i: Vector3i) : this(vector3i.x, vector3i.y, vector3i.z)
     constructor(vector3d: Vector3d) : this(vector3d.x, vector3d.y, vector3d.z)
 
+   @Suppress("NOTHING_TO_INLINE")
+   inline operator fun times(facing: Facing): BlockPos {
+        return offset(facing)
+    }
+
     @JvmOverloads
     fun up(n: Int = 1): BlockPos = offset(Facing.UP, n)
 
