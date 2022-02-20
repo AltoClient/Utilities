@@ -37,3 +37,9 @@ inline fun <T> Iterator<T>.any(predicate: (T) -> Boolean): Boolean {
     }
     return false
 }
+
+inline fun <T> Iterator<T>.count(predicate: (T) -> Boolean): Int {
+    var count = 0
+    for (element in this) if (predicate(element)) ++count
+    return count
+}

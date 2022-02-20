@@ -182,6 +182,11 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
         return out
     }
 
+    fun offset(n: Int, out: BlockPos, vararg faces: Facing): BlockPos {
+        faces.forEach { out.offset(it, out, n) }
+        return out
+    }
+
     @JvmOverloads
     fun offset(facing: Facing, n: Int = 1): BlockPos {
         return if (n == 0) this else BlockPos(
