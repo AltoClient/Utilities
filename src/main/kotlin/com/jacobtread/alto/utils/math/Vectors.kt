@@ -6,6 +6,8 @@ import org.joml.Vector3i
 
 // UTIL FUNCTIONS FOR WORKING WITH VECTORS
 
+val TMP_VEC = Vector3d()
+
 fun Vector3d.add(vector3i: Vector3i): Vector3d {
     return add(vector3i.x.toDouble(), vector3i.y.toDouble(), vector3i.z.toDouble())
 }

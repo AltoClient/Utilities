@@ -32,9 +32,6 @@ open class IdentityRegistryWithDefault<V>(private val defaultIdentifier: Identif
         return super.put(id, key, value)
     }
 
-    fun <T : V> put(id: Int, key: String, value: T): T = put(id, Identifier(key), value)
-
-
     override fun get(id: Int): V? {
         val value = super.get(id)
         return value ?: defaultValue
