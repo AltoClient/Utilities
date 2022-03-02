@@ -111,6 +111,24 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             }
         }
 
+        class VerticalIterator(origin: BlockPos, yStart: Int, private val yEnd: Int) : AbstractIterator<BlockPos>() {
+            val blockPos = BlockPos(origin.x, yStart, origin.z)
+            var reverse: Boolean = yStart > yEnd
+
+            override fun computeNext() {
+                if ((reverse && blockPos.y >= yEnd) || (!reverse && blockPos.y <= yEnd)) {
+                    setNext(blockPos)
+                    if (reverse) {
+                        blockPos.y--
+                    } else {
+                        blockPos.y++
+                    }
+                } else {
+                    done()
+                }
+            }
+        }
+
         class BoxIterator(val from: BlockPos, val to: BlockPos) : AbstractIterator<BlockPos>() {
             private val blockPos: BlockPos = from.copy()
             private var isFirst = true
@@ -137,6 +155,7 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             }
         }
 
+
         @JvmStatic
         fun boxIterator(from: BlockPos, to: BlockPos): Iterable<BlockPos> {
             from.min(to)
@@ -144,6 +163,19 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
             return object : Iterable<BlockPos> {
                 override fun iterator(): Iterator<BlockPos> = BoxIterator(from, to)
             }
+        }
+
+        @JvmStatic
+        fun boxIterator(axisAlignedBB: AxisAlignedBB): Iterable<BlockPos> {
+            return boxIterator(
+                BlockPos(axisAlignedBB.minX, axisAlignedBB.minY, axisAlignedBB.minZ),
+                BlockPos(axisAlignedBB.maxX + 1.0, axisAlignedBB.maxY + 1.0, axisAlignedBB.maxZ + 1.0)
+            )
+        }
+
+        @JvmStatic
+        fun verticalIterator(origin: BlockPos, yStart: Int, yEnd: Int): VerticalIterator {
+            return VerticalIterator(origin, yStart, yEnd)
         }
     }
 
@@ -153,8 +185,8 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
     constructor(vector3i: Vector3i) : this(vector3i.x, vector3i.y, vector3i.z)
     constructor(vector3d: Vector3d) : this(vector3d.x, vector3d.y, vector3d.z)
 
-   @Suppress("NOTHING_TO_INLINE")
-   inline operator fun times(facing: Facing): BlockPos {
+    @Suppress("NOTHING_TO_INLINE")
+    inline operator fun times(facing: Facing): BlockPos {
         return offset(facing)
     }
 
