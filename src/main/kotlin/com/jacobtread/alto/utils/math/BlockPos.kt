@@ -7,6 +7,47 @@ import java.util.function.Predicate
 
 open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
 
+    public class ReusableBoxIterator() : AbstractIterator<BlockPos>() {
+        private val to: BlockPos = BlockPos()
+        private val from: BlockPos = BlockPos()
+
+        private val blockPos: BlockPos = BlockPos()
+        private var isFirst = true
+
+        override fun computeNext() {
+            if (isFirst) {
+                setNext(blockPos)
+                isFirst = false
+            } else if (blockPos == to) {
+                done()
+            } else {
+                if (blockPos.x < to.x) {
+                    blockPos.x++
+                } else if (blockPos.y < to.y) {
+                    blockPos.x = from.x
+                    blockPos.y++
+                } else if (blockPos.z < to.z) {
+                    blockPos.x = from.x
+                    blockPos.y = from.y
+                    blockPos.z++
+                }
+                setNext(blockPos)
+            }
+        }
+
+        fun setBounds(from: BlockPos, to: BlockPos) {
+            this.to.set(to)
+            this.from.set(from)
+            blockPos.set(from)
+        }
+
+        fun setBounds(x1: Int, y1: Int, z1: Int, x2: Int, y2: Int, z2: Int) {
+            this.to.set(x2, y2, z1)
+            this.from.set(x1, y1, z1)
+            blockPos.set(x1, y1, z1)
+        }
+    }
+
     companion object {
         @JvmField
         val ORIGIN = BlockPos()
@@ -128,6 +169,7 @@ open class BlockPos(x: Int, y: Int, z: Int) : Vector3i(x, y, z) {
                 }
             }
         }
+
 
         class BoxIterator(val from: BlockPos, val to: BlockPos) : AbstractIterator<BlockPos>() {
             private val blockPos: BlockPos = from.copy()

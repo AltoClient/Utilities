@@ -13,6 +13,19 @@ inline fun <T> MutableCollection<T>.addIf(value: T, test: (value: T) -> Boolean)
     if (test(value)) this.add(value)
 }
 
+/**
+ * addIfNonNullAnd Conditionally adds an item to a collection. If the [test] is passed
+ * for the item provided also performs a null check before invoking test
+ *
+ * @param T The type of the collection items
+ * @param value The value to add
+ * @param test The condition that must pass
+ * @receiver
+ */
+inline fun <T> MutableCollection<T>.addIfNonNullAnd(value: T?, test: (value: T) -> Boolean) {
+    if (value != null && test(value)) this.add(value)
+}
+
 inline fun <T> Collection<T>.forEachExcluding(value: T, loop: (value: T) -> Unit) {
     for (t in this) {
         if (t != value) {
